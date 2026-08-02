@@ -75,15 +75,15 @@
             >;
         };
 
-        // moNa2 layer_4 を流用（カーソル / ナビゲーション）
+        // moNa2 layer_5 を流用（カーソル / ナビゲーション、Mac用）
         layer_2 {
             display-name = "Navigation Layer";
             bindings = <
-&kp PAGE_UP     &kp LC(LS(TAB))  &kp UP_ARROW    &kp LC(TAB)      &kp PAGE_DOWN                    &trans  &trans              &kp LG(UP_ARROW)    &trans               &trans
-&kp HOME        &kp LEFT_ARROW   &kp DOWN_ARROW  &kp RIGHT_ARROW  &kp END                          &trans  &kp LG(LEFT_ARROW)  &kp LG(DOWN_ARROW)  &kp LG(RIGHT_ARROW)  &trans
-&kp LEFT_SHIFT  &trans           &trans          &trans           &trans                           &trans  &trans              &trans              &trans               &trans
-&trans          &trans           &trans          &trans           &trans         &trans    &trans  &trans  &trans              &trans              &trans               &trans
-                                 &trans          &trans           &trans                           &trans  &trans              &trans
+&kp PAGE_UP       &kp LC(LS(TAB))  &kp UP_ARROW    &kp LC(TAB)      &kp PAGE_DOWN                                 &trans  &kp LA(LC(V))     &kp LC(RA(F))  &trans                &trans
+&kp HOME          &kp LEFT_ARROW   &kp DOWN_ARROW  &kp RIGHT_ARROW  &kp END                                       &trans  &kp LC(LEFT_ALT)  &trans         &kp LC(RA(LEFT_WIN))  &trans
+&trans            &trans           &trans          &trans           &kp LG(LS(LC(N4)))                            &trans  &trans            &kp LG(M)      &trans                &trans
+&kp LEFT_CONTROL  &trans           &trans          &trans           &trans              &trans                    &trans  &trans            &trans         &trans                &trans  &trans
+                                   &trans          &trans           &trans                                        &trans  &trans            &trans
             >;
 
             sensor-bindings = <&encoder_kp C_VOL_UP C_VOL_DN>;
@@ -94,7 +94,7 @@
             display-name = "Mark Layer";
             bindings = <
 &kp GRAVE              &trans           &trans       &trans         &trans                           &trans        &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &kp MINUS             &kp EQUAL
-&trans                 &kp EXCLAMATION  &kp AT_SIGN  &kp HASH       &kp DOLLAR                       &kp ASTERISK  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp NON_US_BACKSLASH  &kp SEMICOLON
+&trans                 &kp EXCLAMATION  &kp AT_SIGN  &kp HASH       &kp DOLLAR                       &kp ASTERISK  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp BACKSLASH         &kp SEMICOLON
 &mt RIGHT_SHIFT MINUS  &kp PERCENT      &kp CARET    &kp AMPERSAND  &trans                           &kp HASH      &kp LEFT_BRACE        &kp RIGHT_BRACE        &kp PIPE              &trans
 &trans                 &trans           &trans       &trans         &trans      &trans    &trans     &trans        &trans                &trans                 &trans                &kp F12
                                         &trans       &trans         &trans                           &trans        &trans                &trans
