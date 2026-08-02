@@ -1,5 +1,6 @@
 #define ZMK_POINTING_DEFAULT_SCRL_VAL 200
 
+#include <input/processors.dtsi>
 #include <dt-bindings/zmk/mouse.h>
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
@@ -7,7 +8,8 @@
 #include <dt-bindings/zmk/pointing.h>
 
 &mt {
-    tapping-term-ms = <300>;
+    tapping-term-ms = <350>;        // 修飾キーが出るまでの長押し時間
+    require-prior-idle-ms = <150>;  // 直前のキー入力から150ms以内なら必ずタップ扱い（タイピング中の誤発動防止）
     flavor = "balanced";
 };
 
@@ -51,48 +53,51 @@
         default_layer {
             display-name = "Default Layer";
             bindings = <
-&kp Q             &kp W     &kp E                    &kp R           &kp T                                               &kp Y           &kp U           &kp I            &kp O      &lt 6 P
-&mt A LCMD        &kp S     &kp D                    &kp F           &kp G                                               &kp H           &kp J           &kp K            &kp L      &kp MINUS
-&mt Z LEFT_SHIFT  &kp X     &kp C                    &kp V           &kp B                                               &kp N           &kp M           &kp COMMA        &kp DOT    &mt SLASH RIGHT_SHIFT
-&kp RCTRL         &kp LCMD  &mt LEFT_ALT LANGUAGE_2  &msc SCRL_UP    &lt 1 SPACE      &lt 2 LANGUAGE_1    &kp BACKSPACE  &lt 3 ENTER     &msc SCRL_UP    &kp F7           &lt 4 F12  &lt 5 ESC
+&kp Q             &kp W     &kp E                    &kp R           &kp T                                               &kp Y           &kp U           &kp I            &kp O      &lt 7 P
+&mt LCMD A        &kp S     &kp D                    &kp F           &kp G                                               &kp H           &kp J           &kp K            &kp L      &kp MINUS
+&mt LEFT_SHIFT Z  &kp X     &kp C                    &kp V           &kp B                                               &kp N           &kp M           &kp COMMA        &kp DOT    &mt RIGHT_SHIFT SLASH
+&kp RCTRL         &kp LALT  &mt LCMD LANGUAGE_2      &msc SCRL_UP    &lt 1 SPACE      &lt 2 LANGUAGE_1    &kp BACKSPACE  &lt 3 ENTER     &msc SCRL_UP    &kp F7           &lt 4 F12  &lt 5 ESC
                             &msc SCRL_LEFT           &msc SCRL_DOWN  &msc SCRL_RIGHT                                     &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_RIGHT
             >;
 
             sensor-bindings = <&encoder_msc SCRL_UP SCRL_DOWN>;
         };
 
+        // moNa2 layer_3 を流用（数字 / ファンクション）
         layer_1 {
-            display-name = "Mouse Layer";
+            display-name = "Number Layer";
             bindings = <
-&trans    &trans  &trans  &trans  &trans                    &kp SPACE     &kp RG(LEFT)  &kp RG(RIGHT)  &mkp MB3      &trans
-&mkp MB5  &trans  &trans  &trans  &trans                    &kp LG(UP)    &mkp MB1      &mkp MB2       &msc SCRL_UP  &msc SCRL_DOWN
-&mkp MB4  &trans  &trans  &trans  &trans                    &kp LG(DOWN)  &kp LEFT      &kp UP         &kp RIGHT     &trans
-&trans    &trans  &trans  &trans  &trans  &trans    &trans  &trans        &trans        &kp DOWN       &trans        &kp LG(W)
-                  &trans  &trans  &trans                    &trans        &trans        &trans
+&kp ESC         &kp F9  &kp F10  &kp F11  &kp F12                    &trans        &kp NUMBER_7  &kp NUMBER_8  &kp NUMBER_9  &kp PLUS
+&trans          &kp F5  &kp F6   &kp F7   &kp F8                     &trans        &kp NUMBER_4  &kp NUMBER_5  &kp NUMBER_6  &kp MINUS
+&kp LEFT_SHIFT  &kp F1  &kp F2   &kp F3   &kp F4                     &kp NUMBER_0  &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp EQUAL
+&trans          &trans  &trans   &trans   &trans   &trans    &trans  &trans        &trans        &trans        &trans        &trans
+                        &trans   &trans   &trans                     &trans        &trans        &trans
             >;
         };
 
+        // moNa2 layer_4 を流用（カーソル / ナビゲーション）
         layer_2 {
-            display-name = "Number Layer";
+            display-name = "Navigation Layer";
             bindings = <
-&trans        &kp NUMBER_7       &kp NUMBER_8         &kp NUMBER_9       &kp EQUAL                          &kp F1     &kp F2    &kp F7           &kp F10      &kp RSHIFT
-&kp ASTERISK  &mt LALT NUMBER_4  &mt LSHIFT NUMBER_5  &mt LGUI NUMBER_6  &mt LCTRL MINUS                    &mkp MB1   &kp LEFT  &kp UP           &kp RIGHT    &kp RGUI
-&kp SLASH     &kp NUMBER_1       &kp NUMBER_2         &kp NUMBER_3       &kp PLUS                           &mkp MB2   &none     &kp DOWN         &none        &kp RALT
-&trans        &kp DOT            &kp NUMBER_0         &kp UP             &kp LANG2        &trans    &trans  &kp LANG1  &kp UP    &kp RS(RC(TAB))  &kp RC(TAB)  &kp F12
-                                 &kp LEFT             &kp DOWN           &kp RIGHT                          &kp LEFT   &kp DOWN  &kp RIGHT
+&kp PAGE_UP     &kp LC(LS(TAB))  &kp UP_ARROW    &kp LC(TAB)      &kp PAGE_DOWN                    &trans  &trans              &kp LG(UP_ARROW)    &trans               &trans
+&kp HOME        &kp LEFT_ARROW   &kp DOWN_ARROW  &kp RIGHT_ARROW  &kp END                          &trans  &kp LG(LEFT_ARROW)  &kp LG(DOWN_ARROW)  &kp LG(RIGHT_ARROW)  &trans
+&kp LEFT_SHIFT  &trans           &trans          &trans           &trans                           &trans  &trans              &trans              &trans               &trans
+&trans          &trans           &trans          &trans           &trans         &trans    &trans  &trans  &trans              &trans              &trans               &trans
+                                 &trans          &trans           &trans                           &trans  &trans              &trans
             >;
 
             sensor-bindings = <&encoder_kp C_VOL_UP C_VOL_DN>;
         };
 
+        // moNa2 layer_2 を流用（記号）
         layer_3 {
             display-name = "Mark Layer";
             bindings = <
-&kp LS(LG(N4))  &kp F4   &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &none                        &kp TILDE  &kp EXCLAMATION  &kp AT_SIGN       &kp HASH           &kp DOLLAR
-&emoji          &kp F5   &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &none                        &kp GRAVE  &kp UNDER        &kp SINGLE_QUOTE  &kp DOUBLE_QUOTES  &kp BACKSLASH
-&kp KP_NUMLOCK  &kp F11  &kp LEFT_BRACE        &kp RIGHT_BRACE        &none                        &kp PIPE   &kp PERCENT      &kp CARET         &kp AMPERSAND      &kp ASTERISK
-&trans          &trans   &kp NUMBER_0          &trans                 &kp SPACE  &trans    &trans  &kp ENTER  &trans           &none             &none              &kp F12
-                         &trans                &trans                 &trans                       &trans     &trans           &trans
+&kp GRAVE              &trans           &trans       &trans         &trans                           &trans        &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &kp MINUS             &kp EQUAL
+&trans                 &kp EXCLAMATION  &kp AT_SIGN  &kp HASH       &kp DOLLAR                       &kp ASTERISK  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp NON_US_BACKSLASH  &kp SEMICOLON
+&mt RIGHT_SHIFT MINUS  &kp PERCENT      &kp CARET    &kp AMPERSAND  &trans                           &kp HASH      &kp LEFT_BRACE        &kp RIGHT_BRACE        &kp PIPE              &trans
+&trans                 &trans           &trans       &trans         &trans      &trans    &trans     &trans        &trans                &trans                 &trans                &kp F12
+                                        &trans       &trans         &trans                           &trans        &trans                &trans
             >;
         };
 
@@ -108,8 +113,7 @@
         };
 
         layer_5 {
-            status = "reserved";
-            display-name = "Brank Layer";
+            display-name = "Blank Layer";
             bindings = <
 &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans
@@ -119,21 +123,24 @@
             >;
         };
 
+        // moNa2 の MOUSE レイヤーを流用。
+        // トラックボールを動かすと zip_temp_layer によって自動で有効化される。
         layer_6 {
-            status = "reserved";
-            display-name = "Brank Layer";
+            display-name = "Mouse Layer";
             bindings = <
-&trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans                    &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans                    &trans  &trans    &trans    &trans    &trans
+&trans  &trans  &trans  &trans  &trans                    &trans  &mkp MB1  &mkp MB3  &mkp MB2  &trans
+&trans  &trans  &trans  &trans  &trans                    &trans  &mkp MB4  &trans    &mkp MB5  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans    &trans    &trans    &trans
+                &trans  &trans  &trans                    &trans  &trans    &trans
             >;
         };
 
+        // moNa2 の SCROLL レイヤーを流用。
+        // 中身は全て &trans で、トラックボールをスクロールに切り替えるためだけの層。
+        // （snippets 側の input-listener の scroller { layers = <7>; } と対応）
         layer_7 {
-            status = "reserved";
-            display-name = "Brank Layer";
+            display-name = "Scroll Layer";
             bindings = <
 &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans
@@ -143,4 +150,16 @@
             >;
         };
     };
+};
+
+// オートマウスレイヤー（layer 6）を解除しないキー位置。
+// ここに列挙した位置は、押しても一時レイヤーが解除されない。
+&zip_temp_layer {
+    excluded-positions = <
+        16  // J (MB1)
+        17  // K (MB3)
+        18  // L (MB2)
+        26  // M (MB4)
+        28  // . (MB5)
+    >;
 };

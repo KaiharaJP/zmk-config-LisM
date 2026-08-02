@@ -146,14 +146,20 @@
     };
 
     // ペリフェラル->セントラルのためのリスナー
+    // （XY反転はペリフェラル側の trackball_split で処理済み）
     peripheral_listener: peripheral_listener {
         compatible = "zmk,input-listener";
         status = "disabled";
         device = <&trackball_split>;
-        // input-processors = 
-        //     <&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,
-        //     <&zip_xy_to_scroll_mapper>,
-        //     <&zip_scroll_scaler 1 16>;
+        input-processors =
+            <&zip_temp_layer 6 10000>;  // 動かすとマウスレイヤー(6)へ自動切替、10秒で戻る
+
+        scroller {
+            layers = <7>;               // スクロールレイヤー(7)が有効な間はスクロール
+            input-processors =
+                <&zip_xy_to_scroll_mapper>,
+                <&zip_scroll_scaler 1 16>;
+        };
     };
 
     // セントラルのためのリスナー（後でdeviceを割当）

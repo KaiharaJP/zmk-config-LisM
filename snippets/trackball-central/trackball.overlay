@@ -25,12 +25,13 @@
 &central_listener {
     status = "okay";
     device = <&trackball_central>;
-    input-processors = 
-        <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>;
+    input-processors =
+        <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>,
+        <&zip_temp_layer 6 10000>;  // 動かすとマウスレイヤー(6)へ自動切替、10秒で戻る
 
     scroller {
-        layers = <2>;
-        input-processors = 
+        layers = <7>;               // スクロールレイヤー(7)が有効な間はスクロール
+        input-processors =
             <&zip_xy_to_scroll_mapper>,
             <&zip_scroll_scaler 1 16>;
     };
